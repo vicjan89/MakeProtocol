@@ -93,52 +93,37 @@ class FUFSPVC(Function):
         return _3i2
 
     def get_electric(self):
-        html = f'<h3>Проверка функции {self.INSTNAME} FUFSPVC</h3>\n'
-        html += f'<h4>Проверка напряжения срабатывания и возврата контроля нулевой последовательности</h4>\n'
-        html += '<table>\n<tr><th>Уставка</th><th>3U0ср,В</th><th>Отклонение %</th><th>3U0в, В</th><th>Кв</th>\n'
+        self.te.h3(f'Проверка функции {self.INSTNAME} FUFSPVC')
+        self.te.h4('Проверка напряжения срабатывания и возврата контроля нулевой последовательности')
+        self.te.table_head('Уставка', '3U0ср,В', 'Отклонение %', '3U0в, В', 'Кв')
         self.set_3U0(self.gt3U0)
         ust = abs(self.get_3U0())
-        html += f'<tr><td>{ust:.1f}</td>' \
-                f'<td>{self.tests["result_3u0"][0]}</td>' \
-                f'<td>{(self.tests["result_3u0"][0] - ust)/ust*100:.2f}</td>' \
-                f'<td>{self.tests["result_3u0"][1]}</td>' \
-                f'<td>{self.tests["result_3u0"][1]/self.tests["result_3u0"][0]:.2f}</td></tr>\n'
-        html += '</table>\n'
+        self.te.table_row(f'{ust:.1f}', f'{self.tests["result_3u0"][0]}', f'{(self.tests["result_3u0"][0] - ust)/ust*100:.2f}',
+                f'{self.tests["result_3u0"][1]}', f'{self.tests["result_3u0"][1]/self.tests["result_3u0"][0]:.2f}')
 
-        html += f'<h4>Проверка тока срабатывания и возврата контроля нулевой последовательности</h4>\n'
-        html += '<table>\n<tr><th>Уставка</th><th>3I0ср,А</th><th>Отклонение %</th><th>3I0в, А</th><th>Кв</th>\n'
+        self.te.h4('Проверка тока срабатывания и возврата контроля нулевой последовательности')
+        self.te.table_head('Уставка', '3I0ср,А', 'Отклонение %', '3I0в, А', 'Кв')
         self.set_3I0(self.lt3I0)
         ust = abs(self.get_3I0())
-        html += f'<tr><td>{ust:.3f}</td>' \
-                f'<td>{self.tests["result_3i0"][0]:.3f}</td>' \
-                f'<td>{(self.tests["result_3i0"][0] - ust) / ust * 100:.2f}</td>' \
-                f'<td>{self.tests["result_3i0"][1]:.3f}</td>' \
-                f'<td>{self.tests["result_3i0"][1] / self.tests["result_3i0"][0]:.2f}</td></tr>\n'
-        html += '</table>\n'
+        self.te.table_row(f'{ust:.3f}', f'{self.tests["result_3i0"][0]:.3f}', f'{(self.tests["result_3i0"][0] - ust) / ust * 100:.2f}',
+                f'{self.tests["result_3i0"][1]:.3f}', f'{self.tests["result_3i0"][1] / self.tests["result_3i0"][0]:.2f}')
 
-        html += f'<h4>Проверка напряжения срабатывания и возврата контроля обратной последовательности</h4>\n'
-        html += '<table>\n<tr><th>Уставка</th><th>3U2ср,В</th><th>Отклонение %</th><th>3U2в, В</th><th>Кв</th>\n'
+        self.te.h4('Проверка напряжения срабатывания и возврата контроля обратной последовательности')
+        self.te.table_head('Уставка', '3U2ср,В', 'Отклонение %', '3U2в, В', 'Кв')
         self.set_3U2(self.gtU2)
         ust = abs(self.get_3U2())
-        html += f'<tr><td>{ust:.1f}</td>' \
-                f'<td>{self.tests["result_3u2"][0]}</td>' \
-                f'<td>{(self.tests["result_3u2"][0] - ust) / ust * 100:.2f}</td>' \
-                f'<td>{self.tests["result_3u2"][1]}</td>' \
-                f'<td>{self.tests["result_3u2"][1] / self.tests["result_3u2"][0]:.2f}</td></tr>\n'
-        html += '</table>\n'
+        self.te.table_row(f'{ust:.1f}', f'{self.tests["result_3u2"][0]}', f'{(self.tests["result_3u2"][0] - ust) / ust * 100:.2f}',
+                f'{self.tests["result_3u2"][1]}', f'{self.tests["result_3u2"][1] / self.tests["result_3u2"][0]:.2f}')
 
-        html += f'<h4>Проверка тока срабатывания и возврата контроля обратной последовательности</h4>\n'
-        html += '<table>\n<tr><th>Уставка</th><th>3I2ср,А</th><th>Отклонение %</th><th>3I2в, А</th><th>Кв</th>\n'
+        self.te.h4('Проверка тока срабатывания и возврата контроля обратной последовательности')
+        self.te.table_head('Уставка', '3I2ср,А', 'Отклонение %', '3I2в, А', 'Кв')
         self.set_3I2(self.ltI2)
         ust = abs(self.get_3I2())
-        html += f'<tr><td>{ust:.3f}</td>' \
-                f'<td>{self.tests["result_3i2"][0]:.3f}</td>' \
-                f'<td>{(self.tests["result_3i2"][0] - ust) / ust * 100:.2f}</td>' \
-                f'<td>{self.tests["result_3i2"][1]:.3f}</td>' \
-                f'<td>{self.tests["result_3i2"][1] / self.tests["result_3i2"][0]:.2f}</td></tr>\n'
-        html += '</table>\n'
-        html += self.tests.get('note', '')
-        return html
+        self.te.table_row(f'{ust:.3f}', f'{self.tests["result_3i2"][0]:.3f}',
+                f'{(self.tests["result_3i2"][0] - ust) / ust * 100:.2f}',
+                f'{self.tests["result_3i2"][1]:.3f}',
+                f'{self.tests["result_3i2"][1] / self.tests["result_3i2"][0]:.2f}')
+        self.te.p(self.tests.get('note', ''))
 
     def get_complex(self):
         return ''

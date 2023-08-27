@@ -16,6 +16,50 @@ from cmath import phase
 #
 #     def __repr__(self):
 #         return f'L1: {repr(self.i[0])} L2: {repr(self.i[1])} L3: {repr(self.i[2])}'
+class TextEngine(ABC, BaseModel):
+
+    path: str
+    text: str = ''
+
+    @abstractmethod
+    def h1(self, text: str):
+        ...
+
+    @abstractmethod
+    def h2(self, text: str):
+        ...
+
+    @abstractmethod
+    def h3(self, text: str):
+        ...
+
+    @abstractmethod
+    def h4(self, text: str):
+        ...
+
+    @abstractmethod
+    def p(self, text: str):
+        ...
+
+    @abstractmethod
+    def table_head(self, *args: str):
+        ...
+
+    @abstractmethod
+    def table_row(self, *args: str):
+        ...
+
+    @abstractmethod
+    def image(self, image_path: str):
+        ...
+
+    def result(self):
+        return self.text
+
+    def save(self):
+        with open(self.path, 'w', encoding='utf-8') as file:
+            file.write(self.text)
+
 
 class Channel(BaseModel):
     prim: int | float = 0
@@ -56,6 +100,8 @@ class Function(ABC, BaseModel):
     contacts: list[str]
     tests: list | dict | None
     analog_inputs: list[AnalogInputs] | None = None
+    te: TextEngine
+    name_terminal: str = ''
 
     @abstractmethod
     def get_electric(self):
@@ -66,57 +112,24 @@ class Function(ABC, BaseModel):
 
 class Terminal:
 
-    def __init__(self, data: dict):
+    def __init__(self, data: dict, text_engine: TextEngine):
         self.name = data['name']
         self.device = data['device']
+        self.te = text_engine
         self.analog_inputs: list[AnalogInputs] = []
         self.functions: list[Function] = []
 
     def get_electric(self):
-        html = f'<h2>Проверка терминала {self.name} {self.device}</h2>\n'
+        self.te.h2(f'Проверка терминала {self.name} {self.device}')
         for func in self.functions:
-            html += func.get_electric()
-        return html
+            func.get_electric()
 
     def get_complex(self):
-        html = f'<h2>Комплексная проверка терминала {self.name} {self.device}</h2>\n'
+        self.te.h2(f'Комплексная проверка терминала {self.name} {self.device}')
         for func in self.functions:
-            html += func.get_complex()
-        return html
+            func.get_complex()
 
 class CBASVAL(BaseModel):
     UBase: float = 132.0
     IBase: float = 3000
     SBase: float = 229.0
-
-class TextEngine(ABC):
-
-    def __init__(self):
-        self.text = ''
-
-    def h1(self, text: str):
-        ...
-
-    def h2(self, text: str):
-        ...
-
-    def h3(self, text: str):
-        ...
-
-    def h4(self, text: str):
-        ...
-
-    def p(self, text: str):
-        ...
-
-    def table_head(self, *args: str):
-        ...
-
-    def table_row(self, *args: str):
-        ...
-
-    def image(self, image_path: str):
-        ...
-
-    def result(self):
-        return self.text

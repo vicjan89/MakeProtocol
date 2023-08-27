@@ -156,7 +156,7 @@ class T3WPDIF(Function):
             raise StopIteration
 
     def get_electric(self):
-        html = '<h3>Проверка функции дифференциальной защиты T3WPDIF</h3>\n'
+        self.te.h3('Проверка функции дифференциальной защиты T3WPDIF')
         if not self.tests.get('result_electric', False):
             print(f'Для функции {self.INSTNAME} отсутствуют данные тестов. Данные сгенерированы ')
             self.tests.update({'torm_haract': []})
@@ -199,11 +199,10 @@ class T3WPDIF(Function):
             self.tests.update({'result_i2': [d2, i2, i2 * 0.96]})
             self.tests.update({'result_i5': [d2, i5, i5 * 0.96]})
         for cs in self.tests['torm_haract']:
-            html += f'<h3>Снятие тормозной характеристики {cs["mode"]}</h3>\n'
-            html += '<table>\n<tr><th>Ток I1A, A</th>' \
-                    '<th>Ток I1B, A</th><th>Ток I1C, A</th><th>Ток I2A, A</th><th>Ток I2B, A</th><th>Ток I2C, A</th>' \
-                    '<th>Ток торможения, о.е.</th><th>Дифференциальный ток фактический, о.е.</th>' \
-                    '<th>Дифференциальный ток уставки, о.е.</th><th>Отклонение, %</th></tr>\n'
+            self.te.h3(f'Снятие тормозной характеристики {cs["mode"]}')
+            self.te.table_head('Ток I1A, A', 'Ток I1B, A', 'Ток I1C, A', 'Ток I2A, A', 'Ток I2B, A', 'Ток I2C, A',
+                    'Ток торможения, о.е.', 'Дифференциальный ток фактический, о.е.',
+                    'Дифференциальный ток уставки, о.е.', 'Отклонение, %')
             torm_list = []
             diff_list = []
             for data in cs['haract']:
@@ -217,15 +216,14 @@ class T3WPDIF(Function):
                 torm_list.append(itorm)
                 diff_list.append(idiff)
                 idiff_ust = self.diff(itorm)
-                html += f'<tr><td>{data[0]:.3f}A {data[1]:.1f}°</td>' \
-                        f'<td>{data[2]:.3f}A {data[3]:.1f}°</td>' \
-                        f'<td>{data[4]:.3f}A {data[5]:.1f}°</td>' \
-                        f'<td>{data[6]:.3f}A {data[7]:.1f}°</td>' \
-                        f'<td>{data[8]:.3f}A {data[9]:.1f}°</td>' \
-                        f'<td>{data[10]:.3f}A {data[11]:.1f}°</td>' \
-                        f'<td>{itorm:.2f}</td><td>{idiff:.3f}</td><td>{idiff_ust:.2f}</td>' \
-                        f'<td>{(idiff_ust-idiff)*100/idiff:.2f}</td><tr>\n'
-            html += '</table>\n'
+                self.te.table_row(f'{data[0]:.3f}A {data[1]:.1f}°',
+                        f'{data[2]:.3f}A {data[3]:.1f}°',
+                        f'{data[4]:.3f}A {data[5]:.1f}°',
+                        f'{data[6]:.3f}A {data[7]:.1f}°',
+                        f'{data[8]:.3f}A {data[9]:.1f}°',
+                        f'{data[10]:.3f}A {data[11]:.1f}°',
+                        f'{itorm:.2f}', f'{idiff:.3f}', f'{idiff_ust:.2f}',
+                        f'{(idiff_ust-idiff)*100/idiff:.2f}')
             fig, ax = plt.subplots()
             fig.set_figheight(7)
             fig.set_figwidth(8)
@@ -235,35 +233,29 @@ class T3WPDIF(Function):
             ax.minorticks_on()
             ax.grid(which='major', lw=1)
             ax.grid(which='minor', lw=0.5)
-            plt.savefig(f'{cs["mode"]} diff_real.png', format="png", dpi=1000)
-        html += 'Проверка блокировки дифференциальной защиты по второй гармонике\n'
-        html += '<table><tr><th>I1,A 50Гц</th><th>I2,A 100Гц</th><th>I2в,A 100Гц</th><th>Кв</th><th>I2/I1,%</th><th>I2/I1изм,%</th></tr>\n'
-        html += f'<tr><td>{self.tests["result_i2"][0]:.3f}</td><td>{self.tests["result_i2"][1]:.3f}</td>' \
-                f'<td>{self.tests["result_i2"][2]:.3f}</td><td>{self.tests["result_i2"][2] / self.tests["result_i2"][1]:.3f}</td>' \
-                f'<td>{self.I2_I1Ratio}</td><td>{self.tests["result_i2"][1] / self.tests["result_i2"][0] * 100:.2f}</td></tr>\n'
-        html += '</table>\n'
-        html += 'Проверка блокировки дифференциальной защиты по пятой гармонике\n'
-        html += '<table><tr><th>I1,A 50Гц</th><th>I5,A 100Гц</th><th>I5в,A 100Гц</th><th>Кв</th><th>I5/I1,%</th>' \
-                '<th>I5/I1изм,%</th></tr>\n'
-        html += f'<tr><td>{self.tests["result_i5"][0]:.3f}</td><td>{self.tests["result_i5"][1]:.3f}</td>' \
-                f'<td>{self.tests["result_i5"][2]:.3f}</td><td>{self.tests["result_i5"][2] / self.tests["result_i5"][1]:.3f}</td>' \
-                f'<td>{self.I5_I1Ratio}</td><td>{self.tests["result_i5"][1] / self.tests["result_i5"][0] * 100:.2f}</td></tr>\n'
-        html += '</table>\n'
-        return html
+            plt.savefig(f'source/_static/{self.name_terminal}_{cs["mode"]}_diff_real.png', format="png", dpi=1000)
+        self.te.h3('Проверка блокировки дифференциальной защиты по второй гармонике')
+        self.te.table_head('I1,A 50Гц', 'I2,A 100Гц', 'I2в,A 100Гц', 'Кв', 'I2/I1,%', 'I2/I1изм,%')
+        self.te.table_row(f'{self.tests["result_i2"][0]:.3f}', f'{self.tests["result_i2"][1]:.3f}',
+                f'{self.tests["result_i2"][2]:.3f}', f'{self.tests["result_i2"][2] / self.tests["result_i2"][1]:.3f}',
+                f'{self.I2_I1Ratio}', f'{self.tests["result_i2"][1] / self.tests["result_i2"][0] * 100:.2f}')
+        self.te.h3('Проверка блокировки дифференциальной защиты по пятой гармонике')
+        self.te.table_head('I1,A 50Гц', 'I5,A 100Гц', 'I5в,A 100Гц', 'Кв', 'I5/I1,%', 'I5/I1изм,%')
+        self.te.table_row(f'{self.tests["result_i5"][0]:.3f}', f'{self.tests["result_i5"][1]:.3f}',
+                f'{self.tests["result_i5"][2]:.3f}', f'{self.tests["result_i5"][2] / self.tests["result_i5"][1]:.3f}',
+                f'{self.I5_I1Ratio}', f'{self.tests["result_i5"][1] / self.tests["result_i5"][0] * 100:.2f}')
 
     def get_complex(self):
         d = self.IdMin * 1.1
         self.set_diff_torm(d, d)
         d2 = abs(self.analog_inputs[self.C1W1["num"]].channels[self.C1W1["l1"]].v_sec)
-        html = f'<h3>Комплексная проверка функции дифференциальной защиты T3WPDIF при токе {d2:.3f} A</h3>\n'
-        html += '<table>\n<tr><th>Время, сек</th><th>Сработавший контакт</th></tr>\n'
+        self.te.h3(f'Комплексная проверка функции дифференциальной защиты T3WPDIF при токе {d2:.3f} A')
+        self.te.table_head('Время, сек', 'Сработавший контакт')
         for num, t_contact in enumerate(self.tests['result_complex']):
             t = f'{t_contact:.3f}' if t_contact else 'Не сработал'
-            html += f'<tr><td>{t}</td><td>{self.contacts[num]}</td></tr>\n'
-        html += '</table>\n'
-        html += f'<p>При токе {d2 / 1.21:.2f} A не срабатывает.</p>\n'
+            self.te.table_row(f'{t}', f'{self.contacts[num]}')
+        self.te.p(f'При токе {d2 / 1.21:.2f} A не срабатывает.')
 
-        return html
 
 
     def get_charact_diff(self):

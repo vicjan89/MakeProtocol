@@ -55,32 +55,27 @@ class ROV2PTOV(Function):
 
 
     def get_electric(self):
-        html = f'<h3>Проверка функции {self.INSTNAME} ROV2PTOV</h3>\n'
+        self.te.h3(f'Проверка функции {self.INSTNAME} ROV2PTOV')
         for num, stage in enumerate(((self.OperationStep1, self.U1, self.t1), (self.OperationStep2, self.U2, self.t2))):
             if stage[0]:
-                html += f'<h3>Проверка напряжения срабатывания и возврата {num+1} ступени функции</h3>\n'
-                html += '<table>\n<tr><th>Уставка</th><th>Uср,А</th><th>Отклонение %</th><th>Uв, А</th><th>Кв</th>\n'
+                self.te.h3(f'Проверка напряжения срабатывания и возврата {num+1} ступени функции')
+                self.te.table_head('Уставка', 'Uср,А', 'Отклонение %', 'Uв, А', 'Кв')
                 self.set_U(stage[1])
                 ust = abs(self.analog_inputs[self.U3P["num"]].channels[self.U3P["ch"]-1].v_sec)
-                html += f'<tr><td>{ust:.1f}</td>' \
-                        f'<td>{self.tests[num]["result_u"][0]}</td>' \
-                        f'<td>{(self.tests[num]["result_u"][0] - ust)/ust*100:.2f}</td>' \
-                        f'<td>{self.tests[num]["result_u"][1]}</td>' \
-                        f'<td>{self.tests[num]["result_u"][1]/self.tests[num]["result_u"][0]:.2f}</td></tr>\n'
-                html += '</table>\n'
-        return html
+                self.te.table_row(f'{ust:.1f}', f'{self.tests[num]["result_u"][0]}',
+                        f'{(self.tests[num]["result_u"][0] - ust)/ust*100:.2f}',
+                        f'{self.tests[num]["result_u"][1]}',
+                        f'{self.tests[num]["result_u"][1]/self.tests[num]["result_u"][0]:.2f}')
 
     def get_complex(self):
-        html = f'<h3>Проверка функции {self.INSTNAME} ROV2PTOV</h3>\n'
+        self.te.h3(f'Проверка функции {self.INSTNAME} ROV2PTOV')
         for num, stage in enumerate(((self.OperationStep1, self.U1, self.t1), (self.OperationStep2, self.U2, self.t2))):
             if stage[0]:
                 ust = abs(self.analog_inputs[self.U3P["num"]].channels[self.U3P["ch"]-1].v_sec)
-                html += f'<h3>Комплексная проверка {num+1} ступени функции при напряжении {ust*1.1:.1f} В</h3>\n'
-                html += '<table>\n<tr><th>Время, сек</th><th>Сработавший контакт</th></tr>\n'
+                self.te.h3(f'Комплексная проверка {num+1} ступени функции при напряжении {ust*1.1:.1f} В')
+                self.te.table_head('Время, сек', 'Сработавший контакт')
                 t_contact: float
                 for num, t_contact in enumerate(self.tests[num]['result_complex']):
                     t = f'{t_contact:.3f}' if t_contact else 'Не сработал'
-                    html += f'<tr><td>{t}</td><td>{self.contacts[num]}</td></tr>\n'
-                html += '</table>\n'
-                html += f'<p>При напряжении {ust * 0.9:.1f} В не срабатывает.</p>\n'
-        return html
+                    self.te.table_row(f'{t}', f'{self.contacts[num]}')
+                self.te.p(f'При напряжении {ust * 0.9:.1f} В не срабатывает.')

@@ -58,8 +58,8 @@ class RET670(Terminal):
                     'FUFSPVC': FUFSPVC}
     analog_input_classes = {'TRM_7I_5U': TRM_7I_5U}
 
-    def __init__(self, data):
-        super().__init__(data)
+    def __init__(self, data, text_engine):
+        super().__init__(data, text_engine)
 
         self.Global_base_values = [CBASVAL(**bv) for bv in data['Global_base_values']]
         for ai in data['analog_inputs']:
@@ -68,5 +68,6 @@ class RET670(Terminal):
             self.functions.append(self.func_classes[func['func']](contacts=func['contacts'], tests=func['tests'],
                                                                   analog_inputs=self.analog_inputs,
                                                                   Global_base_values=self.Global_base_values,
+                                                                  te=self.te, name_terminal=self.name,
                                                                   ** func['settings']))
 
