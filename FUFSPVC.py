@@ -95,6 +95,7 @@ class FUFSPVC(Function):
     def get_electric(self):
         self.te.h3(f'Проверка функции {self.INSTNAME} FUFSPVC')
         self.te.h4('Проверка напряжения срабатывания и возврата контроля нулевой последовательности')
+        self.te.table_name()
         self.te.table_head('Уставка', '3U0ср,В', 'Отклонение %', '3U0в, В', 'Кв')
         self.set_3U0(self.gt3U0)
         ust = abs(self.get_3U0())
@@ -102,6 +103,7 @@ class FUFSPVC(Function):
                 f'{self.tests["result_3u0"][1]}', f'{self.tests["result_3u0"][1]/self.tests["result_3u0"][0]:.2f}')
 
         self.te.h4('Проверка тока срабатывания и возврата контроля нулевой последовательности')
+        self.te.table_name()
         self.te.table_head('Уставка', '3I0ср,А', 'Отклонение %', '3I0в, А', 'Кв')
         self.set_3I0(self.lt3I0)
         ust = abs(self.get_3I0())
@@ -109,6 +111,7 @@ class FUFSPVC(Function):
                 f'{self.tests["result_3i0"][1]:.3f}', f'{self.tests["result_3i0"][1] / self.tests["result_3i0"][0]:.2f}')
 
         self.te.h4('Проверка напряжения срабатывания и возврата контроля обратной последовательности')
+        self.te.table_name()
         self.te.table_head('Уставка', '3U2ср,В', 'Отклонение %', '3U2в, В', 'Кв')
         self.set_3U2(self.gtU2)
         ust = abs(self.get_3U2())
@@ -116,6 +119,7 @@ class FUFSPVC(Function):
                 f'{self.tests["result_3u2"][1]}', f'{self.tests["result_3u2"][1] / self.tests["result_3u2"][0]:.2f}')
 
         self.te.h4('Проверка тока срабатывания и возврата контроля обратной последовательности')
+        self.te.table_name()
         self.te.table_head('Уставка', '3I2ср,А', 'Отклонение %', '3I2в, А', 'Кв')
         self.set_3I2(self.ltI2)
         ust = abs(self.get_3I2())
@@ -123,7 +127,7 @@ class FUFSPVC(Function):
                 f'{(self.tests["result_3i2"][0] - ust) / ust * 100:.2f}',
                 f'{self.tests["result_3i2"][1]:.3f}',
                 f'{self.tests["result_3i2"][1] / self.tests["result_3i2"][0]:.2f}')
-        self.te.p(self.tests.get('note', ''))
+        self.te.warning(self.tests.get('note', ''))
 
     def get_complex(self):
         return ''

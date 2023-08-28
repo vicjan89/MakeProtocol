@@ -14,8 +14,6 @@ except ImportError:
 
 with open(path, 'r', encoding='utf-8') as stream:
     data = load(stream, Loader=Loader)
-# html = '<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="protocol.css">' \
-#        '</head><body>\n'
 rst = ReStructuredText(path='source/protocol_tec2_grodno.rst')
 classes = {'RET670': RET670, 'REF545': REF545}
 device_obj = []
@@ -24,6 +22,22 @@ for device in data:
     if device_cls:
         device_obj.append(device_cls(device, rst))
         device_obj[-1].get_electric()
-for device in  device_obj:
-    device.get_complex()
+rst.save()
+rst = ReStructuredText(path='source/complex_tec2_grodno.rst')
+classes = {'RET670': RET670, 'REF545': REF545}
+device_obj = []
+for device in data:
+    device_cls = classes.get(device['device'], None)
+    if device_cls:
+        device_obj.append(device_cls(device, rst))
+        device_obj[-1].get_complex()
+rst.save()
+rst = ReStructuredText(path='source/work_current.rst')
+classes = {'RET670': RET670, 'REF545': REF545}
+device_obj = []
+for device in data:
+    device_cls = classes.get(device['device'], None)
+    if device_cls:
+        device_obj.append(device_cls(device, rst))
+        device_obj[-1].get_work_current()
 rst.save()

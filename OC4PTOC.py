@@ -22,9 +22,10 @@ class OC4PTOC(Function):
 
     def get_electric(self):
         phases = ('A', 'B', 'C')
-        html = ''
+        self.te.h3('Проверка функции OC4PTOC')
         for num_stage, stage in enumerate(self.stages):
-            self.te.h3(f'Проверка токов срабатывания и возврата функции {stage.name}')
+            self.te.h4(f'Проверка токов срабатывания и возврата функции {stage.name}')
+            self.te.table_name()
             self.te.table_head('Фаза', 'Уставка', 'Iср,А', 'Отклонение %', 'Iв, А', 'Кв')
             i2 = stage.I1 * self.IBase / self.KTT / 100
             if not self.tests[num_stage]['result_isz']:
@@ -45,6 +46,7 @@ class OC4PTOC(Function):
         for num_stage, stage in enumerate(self.stages):
             i2 = stage.I1 * self.IBase / self.KTT / 100
             self.te.h3(f'Комплексная проверка функции {stage.name} при токе {i2 * 1.1:.2f} A')
+            self.te.table_name()
             self.te.table_head('Время, сек', 'Сработавший контакт')
             for num, t_contact in enumerate(self.tests[num_stage]['result_complex']):
                 t = f'{t_contact:.3f}' if t_contact else 'Не сработал'

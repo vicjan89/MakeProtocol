@@ -42,6 +42,10 @@ class TextEngine(ABC, BaseModel):
         ...
 
     @abstractmethod
+    def table_name(self, name: str):
+        ...
+
+    @abstractmethod
     def table_head(self, *args: str):
         ...
 
@@ -53,8 +57,13 @@ class TextEngine(ABC, BaseModel):
     def image(self, image_path: str):
         ...
 
-    def result(self):
-        return self.text
+    @abstractmethod
+    def tip(self, text: str):
+        ...
+
+    @abstractmethod
+    def warning(self, text: str):
+        ...
 
     def save(self):
         with open(self.path, 'w', encoding='utf-8') as file:
@@ -115,6 +124,7 @@ class Terminal:
     def __init__(self, data: dict, text_engine: TextEngine):
         self.name = data['name']
         self.device = data['device']
+        self.work_current = data.get('work_current')
         self.te = text_engine
         self.analog_inputs: list[AnalogInputs] = []
         self.functions: list[Function] = []
@@ -128,6 +138,16 @@ class Terminal:
         self.te.h2(f'Комплексная проверка терминала {self.name} {self.device}')
         for func in self.functions:
             func.get_complex()
+
+    def get_work_current(self):
+        if self.work_current:
+            self.te.h2(f'Проверка рабочим током и напряжением терминала {self.name} {self.device}')
+            for key, value in self.work_current.items():
+                head = [item[0] for item in value]
+                row = [item[1] for item in value]
+                self.te.table_name(key)
+                self.te.table_head(*head)
+                self.te.table_row(*row)
 
 class CBASVAL(BaseModel):
     UBase: float = 132.0

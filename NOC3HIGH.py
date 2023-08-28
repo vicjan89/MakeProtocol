@@ -17,6 +17,7 @@ class NOC3HIGH:
     def get_electric(self):
         phases = ('A', 'B', 'C')
         self.te.h3(f'Проверка токов срабатывания и возврата функции NOC3HIGH {self.name}')
+        self.te.table_name()
         self.te.table_head('Фаза', 'Уставка', 'Iср,А', 'Отклонение %', 'Iв, А', 'Кв')
         for num, phase in enumerate(self.tests['result_i']):
             ust = self.Start_current * self.ct[num].second_current

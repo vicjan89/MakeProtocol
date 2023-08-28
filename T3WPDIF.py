@@ -9,6 +9,8 @@ import numpy as np
 from numpy import sqrt, radians
 
 
+from functions import transliteration
+
 class T3WPDIF(Function):
 
     INSTNAME: str = 'дифференциальная защита'
@@ -199,10 +201,11 @@ class T3WPDIF(Function):
             self.tests.update({'result_i2': [d2, i2, i2 * 0.96]})
             self.tests.update({'result_i5': [d2, i5, i5 * 0.96]})
         for cs in self.tests['torm_haract']:
-            self.te.h3(f'Снятие тормозной характеристики {cs["mode"]}')
+            self.te.h4(f'Снятие тормозной характеристики {cs["mode"]}')
+            self.te.table_name()
             self.te.table_head('Ток I1A, A', 'Ток I1B, A', 'Ток I1C, A', 'Ток I2A, A', 'Ток I2B, A', 'Ток I2C, A',
-                    'Ток торможения, о.е.', 'Дифференциальный ток фактический, о.е.',
-                    'Дифференциальный ток уставки, о.е.', 'Отклонение, %')
+                    'Ток торм, о.е.', 'Диффток факт, о.е.',
+                    'Диффток уставки, о.е.', 'Отклонение, %')
             torm_list = []
             diff_list = []
             for data in cs['haract']:
@@ -233,13 +236,18 @@ class T3WPDIF(Function):
             ax.minorticks_on()
             ax.grid(which='major', lw=1)
             ax.grid(which='minor', lw=0.5)
-            plt.savefig(f'source/_static/{self.name_terminal}_{cs["mode"]}_diff_real.png', format="png", dpi=1000)
-        self.te.h3('Проверка блокировки дифференциальной защиты по второй гармонике')
+            image_path = f'_static/{self.name_terminal}_{cs["mode"]}_diff_real.png'
+            image_path = transliteration(image_path)
+            plt.savefig('source/' + image_path, format="png", dpi=1000)
+            self.te.image(image_path, f'Фактическая тормозная характиристика в режиме {cs["mode"]}')
+        self.te.h4('Проверка блокировки дифференциальной защиты по второй гармонике')
+        self.te.table_name()
         self.te.table_head('I1,A 50Гц', 'I2,A 100Гц', 'I2в,A 100Гц', 'Кв', 'I2/I1,%', 'I2/I1изм,%')
         self.te.table_row(f'{self.tests["result_i2"][0]:.3f}', f'{self.tests["result_i2"][1]:.3f}',
                 f'{self.tests["result_i2"][2]:.3f}', f'{self.tests["result_i2"][2] / self.tests["result_i2"][1]:.3f}',
                 f'{self.I2_I1Ratio}', f'{self.tests["result_i2"][1] / self.tests["result_i2"][0] * 100:.2f}')
-        self.te.h3('Проверка блокировки дифференциальной защиты по пятой гармонике')
+        self.te.h4('Проверка блокировки дифференциальной защиты по пятой гармонике')
+        self.te.table_name()
         self.te.table_head('I1,A 50Гц', 'I5,A 100Гц', 'I5в,A 100Гц', 'Кв', 'I5/I1,%', 'I5/I1изм,%')
         self.te.table_row(f'{self.tests["result_i5"][0]:.3f}', f'{self.tests["result_i5"][1]:.3f}',
                 f'{self.tests["result_i5"][2]:.3f}', f'{self.tests["result_i5"][2] / self.tests["result_i5"][1]:.3f}',
@@ -250,6 +258,7 @@ class T3WPDIF(Function):
         self.set_diff_torm(d, d)
         d2 = abs(self.analog_inputs[self.C1W1["num"]].channels[self.C1W1["l1"]].v_sec)
         self.te.h3(f'Комплексная проверка функции дифференциальной защиты T3WPDIF при токе {d2:.3f} A')
+        self.te.table_name()
         self.te.table_head('Время, сек', 'Сработавший контакт')
         for num, t_contact in enumerate(self.tests['result_complex']):
             t = f'{t_contact:.3f}' if t_contact else 'Не сработал'

@@ -14,11 +14,21 @@ class ReStructuredText(TextEngine):
     def h4(self, text: str):
         self.text += '\n' + text + '\n' + '-' * len(text) + '\n\n'
 
+    def h5(self, text: str):
+        self.text += '\n' + text + '\n' + '^' * len(text) + '\n\n'
+
     def p(self, text: str):
         self.text += f'\n{text}\n\n'
 
+    def table_name(self, name: str = ''):
+        self.text += f'\n.. list-table:: {name}\n   :header-rows: 1\n'
+
     def table_head(self, *args: str):
-        self.text += '\n.. list-table::\n   :header-rows: 1\n\n'
+        num = len(args)
+        widths = int(100 / num)
+        s = [f'{widths}' for i in range(num)]
+        s = ', '.join(s)
+        self.text += f'   :widths: {s}\n\n'
         first = '   *'
         for col in args:
             self.text += f'{first} - {col}\n'
@@ -32,6 +42,11 @@ class ReStructuredText(TextEngine):
             if first == '   *':
                 first = '    '
 
-    def image(self, image_path: str):
-        self.text += f'\n.. image:: {image_path}\n\n'
+    def image(self, image_path: str, name: str = ''):
+        self.text += f'\n.. figure:: {image_path}\n\n   {name}\n\n'
 
+    def warning(self, text: str):
+        self.text += f'.. warning:: {text}\n\n'
+
+    def tip(self, text: str):
+        self.text += f'.. tip:: {text}\n\n'

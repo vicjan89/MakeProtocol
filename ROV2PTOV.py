@@ -58,7 +58,8 @@ class ROV2PTOV(Function):
         self.te.h3(f'Проверка функции {self.INSTNAME} ROV2PTOV')
         for num, stage in enumerate(((self.OperationStep1, self.U1, self.t1), (self.OperationStep2, self.U2, self.t2))):
             if stage[0]:
-                self.te.h3(f'Проверка напряжения срабатывания и возврата {num+1} ступени функции')
+                self.te.h4(f'Проверка напряжения срабатывания и возврата {num+1} ступени функции')
+                self.te.table_name()
                 self.te.table_head('Уставка', 'Uср,А', 'Отклонение %', 'Uв, А', 'Кв')
                 self.set_U(stage[1])
                 ust = abs(self.analog_inputs[self.U3P["num"]].channels[self.U3P["ch"]-1].v_sec)
@@ -71,8 +72,10 @@ class ROV2PTOV(Function):
         self.te.h3(f'Проверка функции {self.INSTNAME} ROV2PTOV')
         for num, stage in enumerate(((self.OperationStep1, self.U1, self.t1), (self.OperationStep2, self.U2, self.t2))):
             if stage[0]:
+                self.set_U(stage[1])
                 ust = abs(self.analog_inputs[self.U3P["num"]].channels[self.U3P["ch"]-1].v_sec)
-                self.te.h3(f'Комплексная проверка {num+1} ступени функции при напряжении {ust*1.1:.1f} В')
+                self.te.h4(f'Комплексная проверка {num+1} ступени функции при напряжении {ust*1.1:.1f} В')
+                self.te.table_name()
                 self.te.table_head('Время, сек', 'Сработавший контакт')
                 t_contact: float
                 for num, t_contact in enumerate(self.tests[num]['result_complex']):
