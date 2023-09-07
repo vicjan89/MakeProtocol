@@ -5,6 +5,9 @@ from pydantic import BaseModel
 import numpy as np
 from cmath import phase
 
+
+from textengines.interfaces import TextEngine
+
 # class I(BaseModel):
 #     i: complex
 #
@@ -16,6 +19,22 @@ from cmath import phase
 #
 #     def __repr__(self):
 #         return f'L1: {repr(self.i[0])} L2: {repr(self.i[1])} L3: {repr(self.i[2])}'
+
+class element(ABC, BaseModel):
+    te: TextEngine | None = None
+
+    @abstractmethod
+    def get_electric(self):
+        ...
+
+
+    @abstractmethod
+    def get_complex(self):
+        ...
+
+    def add_te(self, te: TextEngine):
+        self.te = te
+
 
 class Channel(BaseModel):
     prim: int | float = 0
@@ -52,19 +71,13 @@ class AnalogInputs(BaseModel):
     name: str
     channels: list[Channel]
 
-class Function(ABC, BaseModel):
+class Function(element):
     contacts: list[str]
     tests: list | dict | None
     analog_inputs: list[AnalogInputs] | None = None
     te: TextEngine
     name_terminal: str = ''
 
-    @abstractmethod
-    def get_electric(self):
-        ...
-    @abstractmethod
-    def get_complex(self):
-        ...
 
 class Terminal:
 
@@ -100,3 +113,5 @@ class CBASVAL(BaseModel):
     UBase: float = 132.0
     IBase: float = 3000
     SBase: float = 229.0
+
+
