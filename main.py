@@ -1,11 +1,14 @@
+import sys
+
+
 from yaml import load, dump
 
 
 from RET670 import *
 from REF545 import *
-from ReStructuredText import ReStructuredText
+from ..textengines.ReStructuredText import ReStructuredText
 
-path = r'C:\Users\User\source\repos\TestRTDI\Resources\protocol_tec2_grodno.yaml'
+path = sys.argv[1]
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
@@ -14,7 +17,7 @@ except ImportError:
 
 with open(path, 'r', encoding='utf-8') as stream:
     data = load(stream, Loader=Loader)
-rst = ReStructuredText(path='source/protocol_tec2_grodno.rst')
+rst = ReStructuredText(path=path.split('.')[0]+'.rst')
 classes = {'RET670': RET670, 'REF545': REF545}
 device_obj = []
 for device in data:

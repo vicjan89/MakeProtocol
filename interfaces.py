@@ -16,59 +16,6 @@ from cmath import phase
 #
 #     def __repr__(self):
 #         return f'L1: {repr(self.i[0])} L2: {repr(self.i[1])} L3: {repr(self.i[2])}'
-class TextEngine(ABC, BaseModel):
-
-    path: str
-    text: str = ''
-
-    @abstractmethod
-    def h1(self, text: str):
-        ...
-
-    @abstractmethod
-    def h2(self, text: str):
-        ...
-
-    @abstractmethod
-    def h3(self, text: str):
-        ...
-
-    @abstractmethod
-    def h4(self, text: str):
-        ...
-
-    @abstractmethod
-    def p(self, text: str):
-        ...
-
-    @abstractmethod
-    def table_name(self, name: str):
-        ...
-
-    @abstractmethod
-    def table_head(self, *args: str):
-        ...
-
-    @abstractmethod
-    def table_row(self, *args: str):
-        ...
-
-    @abstractmethod
-    def image(self, image_path: str):
-        ...
-
-    @abstractmethod
-    def tip(self, text: str):
-        ...
-
-    @abstractmethod
-    def warning(self, text: str):
-        ...
-
-    def save(self):
-        with open(self.path, 'w', encoding='utf-8') as file:
-            file.write(self.text)
-
 
 class Channel(BaseModel):
     prim: int | float = 0
