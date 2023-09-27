@@ -72,42 +72,44 @@ class AnalogInputs(BaseModel):
     channels: list[Channel]
 
 class Function(element):
-    contacts: list[str]
-    tests: list | dict | None
+    contacts: list[str] | None = None
+    tests: list | dict | None = None
     analog_inputs: list[AnalogInputs] | None = None
-    te: TextEngine
-    name_terminal: str = ''
+    # name_terminal: str = ''
+
+class Terminal(element):
+    name: str
 
 
-class Terminal:
-
-    def __init__(self, data: dict, text_engine: TextEngine):
-        self.name = data['name']
-        self.device = data['device']
-        self.work_current = data.get('work_current')
-        self.te = text_engine
-        self.analog_inputs: list[AnalogInputs] = []
-        self.functions: list[Function] = []
-
-    def get_electric(self):
-        self.te.h2(f'Проверка терминала {self.name} {self.device}')
-        for func in self.functions:
-            func.get_electric()
-
-    def get_complex(self):
-        self.te.h2(f'Комплексная проверка терминала {self.name} {self.device}')
-        for func in self.functions:
-            func.get_complex()
-
-    def get_work_current(self):
-        if self.work_current:
-            self.te.h2(f'Проверка рабочим током и напряжением терминала {self.name} {self.device}')
-            for key, value in self.work_current.items():
-                head = [item[0] for item in value]
-                row = [item[1] for item in value]
-                self.te.table_name(key)
-                self.te.table_head(*head)
-                self.te.table_row(*row)
+# class Terminal:
+#
+#     def __init__(self, data: dict, text_engine: TextEngine):
+#         self.name = data['name']
+#         self.device = data['device']
+#         self.work_current = data.get('work_current')
+#         self.te = text_engine
+#         self.analog_inputs: list[AnalogInputs] = []
+#         self.functions: list[Function] = []
+#
+#     def get_electric(self):
+#         self.te.h2(f'Проверка терминала {self.name} {self.device}')
+#         for func in self.functions:
+#             func.get_electric()
+#
+#     def get_complex(self):
+#         self.te.h2(f'Комплексная проверка терминала {self.name} {self.device}')
+#         for func in self.functions:
+#             func.get_complex()
+#
+#     def get_work_current(self):
+#         if self.work_current:
+#             self.te.h2(f'Проверка рабочим током и напряжением терминала {self.name} {self.device}')
+#             for key, value in self.work_current.items():
+#                 head = [item[0] for item in value]
+#                 row = [item[1] for item in value]
+#                 self.te.table_name(key)
+#                 self.te.table_head(*head)
+#                 self.te.table_row(*row)
 
 class CBASVAL(BaseModel):
     UBase: float = 132.0
