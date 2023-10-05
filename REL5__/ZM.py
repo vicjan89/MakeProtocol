@@ -16,7 +16,7 @@ class ZM(Function):
     R0PE: float | None = None
     RFPE: float | None = None
 
-    def get_electric(self):
+    def get_electric(self, n: int):
         settings = []
         check_points = []
         if self.OperationPP:
@@ -38,7 +38,7 @@ class ZM(Function):
                 # Z1 = complex(self.R1PE, self.X1PE)
                 # Kn = (Z0 - Z1) / Z1 / 3
                 new_check_points.append(points[-1])
-                self.te.table_name(f'Измерения характеристики в режиме {points[-1]}')
+                self.te.table_name(f'Измерения характеристики {n} ступени в режиме {points[-1]}')
                 self.te.table_head('№', 'I, A', 'U, В', 'z, Ом', 'r, Ом', 'x, Ом')
                 for i in range(len(points[0])):
                     U = cmath.rect(points[2][i], math.radians(points[3][i]))
@@ -50,7 +50,7 @@ class ZM(Function):
                                       f'{abs(Z):.2f} {math.degrees(cmath.phase(Z)):.1f}°', f'{Z.real:.2f}', f'{Z.imag:.2f}')
                 points = new_check_points
             else:
-                self.te.table_name(f'Измерения характеристики в режиме {points[2]}')
+                self.te.table_name(f'Измерения характеристики {n} ступени в режиме {points[2]}')
                 self.te.table_head('№', 'r, Ом', 'x, Ом', '№', 'r, Ом', 'x, Ом')
                 l = len(points[0])
                 i = 0
@@ -62,10 +62,13 @@ class ZM(Function):
                         row = []
                     i += 1
             check_points.append(points)
-        self.te.graph_z(settings=settings, check_points=check_points, title='Дистанционная защита')
+        self.te.graph_z(settings=settings, check_points=check_points, title=f'{n} ступень дистанционной защиты')
 
-    def get_complex(self):
-        ...
+    def get_complex(self, n: int):
+        if self.complex:
+            table_name = f'{n} ступень дистанционной защиты при r={self.complex[0][0]} Ом x={self.complex[0][1]} Ом вид ' \
+                         f'КЗ {self.complex[0][2]}'
+            super().get_complex(table_name)
 
     def trip(self, z: complex, ph1: bool = False): #TODO: реализовать однофазные КЗ
         phi = math.degrees(cmath.phase(z))
