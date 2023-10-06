@@ -2,6 +2,7 @@ import cmath
 import math
 
 from interfaces import Function
+from REL5__.GFC import GFC
 
 class ZM(Function):
     Operation: str
@@ -15,6 +16,7 @@ class ZM(Function):
     X0PE: float | None = None
     R0PE: float | None = None
     RFPE: float | None = None
+    gfc: GFC | None = None
 
     def get_electric(self, n: int):
         settings = []
@@ -40,14 +42,27 @@ class ZM(Function):
                 new_check_points.append(points[-1])
                 self.te.table_name(f'Измерения характеристики {n} ступени в режиме {points[-1]}')
                 self.te.table_head('№', 'I, A', 'U, В', 'z, Ом', 'r, Ом', 'x, Ом')
-                for i in range(len(points[0])):
-                    U = cmath.rect(points[2][i], math.radians(points[3][i]))
-                    I = cmath.rect(points[0][i], math.radians(points[1][i]))
-                    Z = U / I#TODO / (1 + Kn) просто подобрал, нужно продумать математику
-                    new_check_points[0].append(Z.real)
-                    new_check_points[1].append(Z.imag)
-                    self.te.table_row(i+1, f'{points[0][i]} {points[1][i]}°', f'{points[2][i]} {points[3][i]}°',
-                                      f'{abs(Z):.2f} {math.degrees(cmath.phase(Z)):.1f}°', f'{Z.real:.2f}', f'{Z.imag:.2f}')
+                if points[-2] == '1ph':
+                    for i in range(len(points[0])):
+                        U = cmath.rect(points[2][i], math.radians(points[3][i]))
+                        I = cmath.rect(points[0][i], math.radians(points[1][i]))
+                        Z = U / I#TODO / (1 + Kn) просто подобрал, нужно продумать математику
+                        new_check_points[0].append(Z.real)
+                        new_check_points[1].append(Z.imag)
+                        self.te.table_row(i+1, f'{points[0][i]} {points[1][i]}°', f'{points[2][i]} {points[3][i]}°',
+                                          f'{abs(Z):.2f} {math.degrees(cmath.phase(Z)):.1f}°', f'{Z.real:.2f}', f'{Z.imag:.2f}')
+                elif points[-2] == '2ph':
+                    for i in range(len(points[0])):
+                        U = cmath.rect(points[2][i], math.radians(points[3][i]))
+                        I = cmath.rect(points[0][i], math.radians(points[1][i])) * 2
+                        Z = U / I#TODO / (1 + Kn) просто подобрал, нужно продумать математику
+                        new_check_points[0].append(Z.real)
+                        new_check_points[1].append(Z.imag)
+                        self.te.table_row(i+1, f'{points[0][i]} {points[1][i]}°', f'{points[2][i]} {points[3][i]}°',
+                                          f'{abs(Z):.2f} {math.degrees(cmath.phase(Z)):.1f}°', f'{Z.real:.2f}', f'{Z.imag:.2f}')
+
+                else:
+                    raise ValueError('Тип повреждения должен быть 1ph или 2ph')
                 points = new_check_points
             else:
                 self.te.table_name(f'Измерения характеристики {n} ступени в режиме {points[2]}')
@@ -62,7 +77,12 @@ class ZM(Function):
                         row = []
                     i += 1
             check_points.append(points)
-        self.te.graph_z(settings=settings, check_points=check_points, title=f'{n} ступень дистанционной защиты')
+        setting_gfc_2ph = self.gfc.get_point_charact_2ph()
+        setting_gfc_2ph.append('GFC междуфазн.')
+        setting_gfc_1ph = self.gfc.get_point_charact_1ph()
+        setting_gfc_1ph.append('GFC однофазн.')
+        self.te.graph_z(settings=settings, check_points=check_points, title=f'{n} ступень дистанционной защиты',
+                        settings_unlim=(setting_gfc_2ph, setting_gfc_1ph))
 
     def get_complex(self, n: int):
         if self.complex:

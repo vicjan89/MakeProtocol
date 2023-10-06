@@ -42,7 +42,8 @@ class Pris(element):
             self.rel551.add_context(**kwargs)
         self.rel511k2.add_context(**kwargs)
         self.ref545.add_context(**kwargs)
-        self.etl.add_context(**kwargs)
+        if self.etl:
+            self.etl.add_context(**kwargs)
         for sf in self.list_sf:
             sf.add_context(**kwargs)
 
@@ -148,7 +149,8 @@ class Pris(element):
             self.rel551.get_electric()
         self.rel511k2.get_electric()
         self.ref545.get_electric()
-        self.etl.get_electric()
+        if self.etl:
+            self.etl.get_electric()
         if self.hf_channel:
             self.hf_channel.get_electric()
 

@@ -20,9 +20,10 @@ class BFP(Function):
 
     def get_electric(self):
         self.te.table_name('BFP')
-        self.te.table_head('Уставка tср на себя', 'Измерено tср на себя', 'Уставка tср на внешние',
-                           'Измерено tср на внешние')
-        self.te.table_row(self.t1, self.tests[0], self.t2, self.tests[1])
+        self.te.table_head('Уставка IP,A', 'Измерено IP,A', 'Уставка tср на себя', 'Измерено tср на себя', 'Уставка tср на внешние',
+                           'Измерено tср на внешние', widths=(1,1,1,1,1,1))
+        self.te.table_row(f'{self.IP / 100 * self.configuration["I1b"]:.2f}', self.tests[2],
+                          self.t1, self.tests[0], self.t2, self.tests[1])
 
     def get_complex(self):
         if self.complex:

@@ -1,7 +1,9 @@
 import cmath
 import math
 
+
 from interfaces import Function
+
 
 class GFC(Function):
     Operation: bool
@@ -46,10 +48,10 @@ class GFC(Function):
     def get_2ph_points(self):
         end = min((self.X1FwPP, self.X1RvPP, self.RFPP/2, self.RLd/2)) * 0.9
         start = math.sqrt(max((self.X1FwPP, self.X1RvPP, self.RFPP/2, self.RLd/2)) ** 2 * 2) * 1.1
-        step = (start - end) / 200
+        step = (start - end) / 3000
         f = 0
         end_f = 2 * cmath.pi
-        step_f = cmath.pi / 100
+        step_f = cmath.pi / 600
         while f < end_f:
             z = start
             while not self.trip(cmath.rect(z, f)):
@@ -60,19 +62,36 @@ class GFC(Function):
             f += step_f
 
 
-def get_1ph_points(self):
-    end = min((self.X1FwPP, self.X1RvPP, self.RFPP / 2, self.RLd / 2)) * 0.9
-    start = math.sqrt(max((self.X1FwPP, self.X1RvPP, self.RFPP / 2, self.RLd / 2)) ** 2 * 2) * 1.1
-    step = (start - end) / 20
-    f = 0
-    end_f = 2 * cmath.pi
-    step_f = cmath.pi / 200
-    while f < end_f:
-        z = start
-        while self.trip(cmath.rect(z, f)):
-            z -= step
-            if z < end:
-                print('Точка не найдена')
-                break
-        yield cmath.rect(z, f)
-        f += step_f
+    def get_1ph_points(self):
+        end = min((self.X1FwPP, self.X1RvPP, self.RFPP / 2, self.RLd / 2)) * 0.9
+        start = math.sqrt(max((self.X1FwPP, self.X1RvPP, self.RFPP / 2, self.RLd / 2)) ** 2 * 2) * 1.1
+        step = (start - end) / 3000
+        f = 0
+        end_f = 2 * cmath.pi
+        step_f = cmath.pi / 600
+        while f < end_f:
+            z = start
+            while self.trip(cmath.rect(z, f)):
+                z -= step
+                if z < end:
+                    print('Точка не найдена')
+                    break
+            yield cmath.rect(z, f)
+            f += step_f
+
+    def get_point_charact_2ph(self):
+        r = []
+        x = []
+        for point in self.get_2ph_points():
+            r.append(point.real)
+            x.append(point.imag)
+        return [r, x]
+
+
+    def get_point_charact_1ph(self):
+        r = []
+        x = []
+        for point in self.get_1ph_points():
+            r.append(point.real)
+            x.append(point.imag)
+        return [r, x]

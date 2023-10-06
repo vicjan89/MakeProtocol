@@ -108,27 +108,27 @@ class REL5__(Terminal):
     def add_context(self, **kwargs):
         super().add_context(**kwargs)
         if self.gfc:
-            self.gfc.add_context(**kwargs)
+            self.gfc.add_context(**kwargs, gfc=self.gfc)
         if self.psd:
             self.psd.add_context(**kwargs)
         if self.zm1:
-            self.zm1.add_context(**kwargs)
+            self.zm1.add_context(**kwargs, gfc=self.gfc)
         if self.zm2:
-            self.zm2.add_context(**kwargs)
+            self.zm2.add_context(**kwargs, gfc=self.gfc)
         if self.zm3:
-            self.zm3.add_context(**kwargs)
+            self.zm3.add_context(**kwargs, gfc=self.gfc)
         if self.zm4:
-            self.zm4.add_context(**kwargs)
+            self.zm4.add_context(**kwargs, gfc=self.gfc)
         if self.zm5:
-            self.zm5.add_context(**kwargs)
+            self.zm5.add_context(**kwargs, gfc=self.gfc)
         if self.fuse:
             self.fuse.add_context(**kwargs, configuration=self.configuration)
         if self.ef4:
             self.ef4.add_context(**kwargs, configuration=self.configuration)
         if self.bfp:
-            self.bfp.add_context(**kwargs)
+            self.bfp.add_context(**kwargs, configuration=self.configuration)
         if self.toc:
-            self.toc.add_context(**kwargs)
+            self.toc.add_context(**kwargs, configuration=self.configuration)
         if self.da06:
             self.da06.add_context(**kwargs)
         if self.da07:
