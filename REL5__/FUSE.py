@@ -1,7 +1,7 @@
 import cmath
 
 
-from interfaces import Function
+from Function import Function
 
 
 class FUSE(Function):

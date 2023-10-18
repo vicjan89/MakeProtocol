@@ -106,6 +106,9 @@ ct:
         - 556
         - 667
         - 709
+vt:
+  up: 110000
+  us1: 100
 list_sf:
   - name: Q1(ШП)
     location: Шкаф ячейки №6 ЗРУ-110кВ
@@ -303,10 +306,11 @@ rel551:
     tP: 7
     IN: 150
     tN: 60
-    name: перегрузка
+    nameP: перегрузка
     tests:
-      - 3.1
-      - 2.85
+      P:
+        - 3.1
+        - 2.85
 rel511k2:
   name: F3
   mode: сработать KQS1 пересадив X04-13 на X04-12. Для ступеней дистанционной защиты, блокировки от качаний активировать
@@ -347,6 +351,7 @@ rel511k2:
   configuration:
     U1b: 57.74
     I1b: 5
+    I4b: 5
   fuse:
     NegativeSeq: true
     gt3U2: 10
@@ -410,6 +415,10 @@ rel511k2:
     R1IN: 3.22
     KX: 125
     KR: 125
+    X1INp: 5.5
+    R1INp: 9.51
+    X1OUTp: 6.88
+    R1OUTp: 11.89
     tests:
       - - 4.02
         - 4.01
@@ -433,14 +442,20 @@ rel511k2:
     Operation: Forward
     OperationPP: true
     X1PP: 0.45
+    X1PPp: 2.47
     R1PP: 0.102
+    R1PPp: 0.56
     RFPP: 1.27
+    RFPPp: 7
     OperationPE: true
     X1PE: 0.45
     R1PE: 0.102
     X0PE: 1.2
+    X0PEp: 6.59
     R0PE: 0.022
+    R0PEp: 0.12
     RFPE: 2.094
+    RFPEp: 11.5
     tests:
       - - - 0.59
           - 0.6
@@ -574,6 +589,9 @@ rel511k2:
     X1PP: 0.91
     R1PP: 0.2
     RFPP: 2.73
+    X1PPp: 5
+    R1PPp: 1.15
+    RFPPp: 15
     OperationPE: false
     complex:
       - - 1.25
@@ -625,6 +643,9 @@ rel511k2:
     X1PP: 5.88
     R1PP: 1.61
     RFPP: 17.47
+    X1PPp: 32.3
+    R1PPp: 8.87
+    RFPPp: 96
     OperationPE: false
     complex:
       - - 9
@@ -672,12 +693,18 @@ rel511k2:
     X1PP: 0.714
     R1PP: 0.164
     RFPP: 4.186
+    X1PPp: 3.92
+    R1PPp: 0.9
+    RFPPp: 23
     OperationPE: true
     X1PE: 0.714
     R1PE: 0.164
     X0PE: 2.91
     R0PE: 0.394
     RFPE: 4.33
+    X0PEp: 16
+    R0PEp: 2.16
+    RFPEp: 23.8
     complex:
       - - 2
         - 0.5
@@ -738,12 +765,18 @@ rel511k2:
     X1PP: 0.248
     R1PP: 0.056
     RFPP: 5.642
+    X1PPp: 1.36
+    R1PPp: 0.31
+    RFPPp: 31
     OperationPE: true
     X1PE: 0.248
     R1PE: 0.056
     X0PE: 0.24
     R0PE: 0.06
     RFPE: 4
+    X0PEp: 1.32
+    R0PEp: 0.32
+    RFPEp: 22
     tests:
       - - - -1.5
           - -2.7
@@ -845,12 +878,13 @@ rel511k2:
     Operation: true
     IP: 400
     tP: 60
-    IN: 25 #не соответствует уставке
+    IN: 87
     tN: 0.15
-    name: автоматическое и телеускорение НТЗНП
+    nameN: автоматическое и телеускорение НТЗНП
     tests:
-      - 1.25
-      - 1.15
+      N:
+        - 1.25
+        - 1.15
     complex:
       - - 2A 115° в канал Ia
         - КЗ AN  с подачей напряжения на вход IO03 BI5 (ввод автоматического ускорения)

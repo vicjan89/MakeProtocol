@@ -1,4 +1,4 @@
-from interfaces import Function
+from Function import Function
 
 class PSD(Function):
     Operation: bool
@@ -7,8 +7,17 @@ class PSD(Function):
     R1IN: float
     KX: float
     KR: float
+    X1INp: float
+    R1INp: float
+    X1OUTp: float
+    R1OUTp: float
 
     def get_electric(self):
+        k = self.vt.kt / self.ct.kt
+        self.te.p(f'Уставки первичные: R1внутр={self.R1INp} Ом, X1внутр={self.X1INp} Ом,'
+                  f'R1внеш={self.R1OUTp} Ом, X1внеш={self.X1OUTp} Ом')
+        self.te.p(f'Уставки вторичные: R1внутр={self.R1IN} Ом, X1внутр={self.X1IN} Ом,'
+                  f'R1внеш={self.R1IN * self.KR / 100} Ом, X1внеш={self.X1IN * self.KX / 100} Ом')
         settings = []
         settings_in = self.get_points_charact_in()
         settings_in.append('Внутренняя характеристика')

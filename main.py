@@ -16,32 +16,6 @@ with open(path, 'r', encoding='utf-8') as stream:
     data = load(stream, Loader=Loader)
 
 rst = ReStructuredText(path=path.split('.')[0]+'.rst', static='_static')
-# classes = {'RET670': RET670, 'REF545': REF545}
-# device_obj = []
-# for device in data:
-#     device_cls = classes.get(device['device'], None)
-#     if device_cls:
-#         device_obj.append(device_cls(device, rst))
-#         device_obj[-1].get_electric()
-# rst.save()
-# rst = ReStructuredText(path='source/complex_tec2_grodno.rst')
-# classes = {'RET670': RET670, 'REF545': REF545}
-# device_obj = []
-# for device in data:
-#     device_cls = classes.get(device['device'], None)
-#     if device_cls:
-#         device_obj.append(device_cls(device, rst))
-#         device_obj[-1].get_complex()
-# rst.save()
-# rst = ReStructuredText(path='source/work_current.rst')
-# classes = {'RET670': RET670, 'REF545': REF545}
-# device_obj = []
-# for device in data:
-#     device_cls = classes.get(device['device'], None)
-#     if device_cls:
-#         device_obj.append(device_cls(device, rst))
-#         device_obj[-1].get_work_current()
-# rst.save()
 
 pris = Pris(**data)
 pris.add_context(te=rst, contacts=pris.contacts)

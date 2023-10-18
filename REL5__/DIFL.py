@@ -1,7 +1,7 @@
 import cmath
 import math
 
-from interfaces import Function
+from Function import Function
 
 
 class DIFL(Function):
@@ -14,7 +14,13 @@ class DIFL(Function):
     ILvl1_2Cross: int
     Evaluate: str
 
+    def __str__(self):
+        return f'DIFL CTFactor={self.CTFactor}, IMinSat={self.IMinSat}%I1b, IMinOp={self.IminOp}%I1b, ' \
+               f'IDiffLvl1={self.IDiffLvl1}%Ibias,' \
+               f' IDiffLvl2={self.IDiffLvl2}%Ibias, ILvl1/2Cross={self.ILvl1_2Cross}%I1b, Evaluate={self.Evaluate}'
+
     def get_electric(self):
+        self.te.p(f'Уставки: {str(self)}')
         self.te.p('Перевести терминал в режим теста с разблокированной функцией DIFL')
         settings = []
         k = self.CTFactor * self.configuration['I1b']

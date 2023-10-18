@@ -1,12 +1,10 @@
-from textengines.interfaces import TextEngine
-
-
 from  hf_channel import HfChannel
 from interfaces import element
 from REL5__.REL511 import REL511
 from REL5__.REL551 import REL551
 from REF54_.REF545 import REF545
 from CT import CT
+from VT import VT
 from ETL540 import ETL540
 from SF import SF
 
@@ -15,14 +13,15 @@ class Pris(element):
     hf_channel: HfChannel | None = None
     rel511k1: REL511 | None = None
     rel551: REL551 | None = None
-    rel511k2: REL511
-    ref545: REF545
+    rel511k2: REL511 | None = None
+    ref545: REF545 | None = None
     etl: ETL540 | None = None
     spec: str | None = None
-    ct: CT
+    ct: CT | None = None
+    vt: VT | None = None
     izol: list
     out_electric: str | None
-    tests: dict
+    tests: dict | None = None
     vzaimodeistvie: list
     work_current: list
     list_sf: list[SF]
@@ -36,6 +35,7 @@ class Pris(element):
         if self.hf_channel:
             self.hf_channel.add_context(**kwargs)
         self.ct.add_context(**kwargs)
+        kwargs.update({'ct': self.ct, 'vt': self.vt})
         if self.rel511k1:
             self.rel511k1.add_context(**kwargs)
         if self.rel551:

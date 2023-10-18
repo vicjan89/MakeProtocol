@@ -20,3 +20,13 @@ class CT(element):
 
     def get_complex(self):
         ...
+
+    def s2p(self, value: float) -> float:
+        return value / self.is1 * self.ip
+
+    def p2s(self, value: float) -> float:
+        return value * self.is1 / self.ip
+
+    @property
+    def kt(self):
+        return self.ip / self.is1

@@ -1,0 +1,138 @@
+
+MMI-AES VERSION 2.00	25.09.2023    13:01:43
+
+
+EQUIPMENT STATUS
+
+	Equipment identification
+		Link number:	N604
+		Equipment name:	Devjatovka 110 kV
+		Cabinet number:	69xxxxxx
+		Equipment number:	HE516026
+		Equipment type:	ETL540/AES550
+		Equipment address:	0
+		Configuration modification counter:	31
+		Firmware identification P4LQ:	AES550 Version 2.01
+
+	Channel 1 status
+		Pilot Rx level:	-23.0 dBu
+		SNR pilot:	> +31.0 dB
+		SNR channel [2 kHz]:	> +25.0 dB
+		Rx Gain (AGC):	+16.9 dB
+ 
+	Alarm status:	No alarm
+	Warning status:	No warning
+
+	R1BC status:
+		Cabinet alarm:	Off
+		Alarm 1:	Off
+		Alarm 2:	Off
+
+	CRC Sum on P4LQ:	DSP-A:  0x76BE
+			DSP-B:  0x2C92
+			DSP-C:  0x144E
+
+
+AES550 STATUS
+
+	AES550 alarms
+			No alarm
+	Loop test
+		Transmission time:	13.5 ms
+
+	Counters
+		Rx Command A:	0     	30.01.2006  16:31
+		Rx Command B:	0     	30.01.2006  16:31
+		Rx Command C:	0     	30.01.2006  16:31
+		Rx Command D:	0     	30.01.2006  16:31
+		Tx Command A:	0     	30.01.2006  16:31
+		Tx Command B:	0     	30.01.2006  16:31
+		Tx Command C:	0     	30.01.2006  16:31
+		Tx Command D:	0     	30.01.2006  16:31
+		Unblocking:	2895  	30.01.2006  16:31
+		Rx Command AES 1:	19    	30.01.2006  16:31
+		Rx Command AES 2:	466   	30.01.2006  16:31
+		Rx Command AES 3:	1     	30.01.2006  16:31
+		Rx Command AES 4:	15    	30.01.2006  16:31
+		Rx Command AES 5:	8     	30.01.2006  16:31
+		Rx Command AES 6:	8     	30.01.2006  16:31
+		Rx Command AES 7:	2     	30.01.2006  16:31
+		Rx Command AES 8:	2     	30.01.2006  16:31
+		Rx Command AES 9:	5     	30.01.2006  16:31
+		Rx Command AES 10:	0     	30.01.2006  16:31
+		Rx Command AES 11:	0     	30.01.2006  16:31
+		Rx Command AES 12:	17802 	30.01.2006  16:31
+		Rx Command AES 13:	0     	30.01.2006  16:31
+		Rx Command AES 14:	0     	30.01.2006  16:31
+		Rx Command AES 15:	0     	30.01.2006  16:31
+		Rx Command AES 16:	0     	30.01.2006  16:31
+		Rx Command AES 17:	0     	30.01.2006  16:31
+		Rx Command AES 18:	0     	30.01.2006  16:31
+		Rx Command AES 19:	0     	30.01.2006  16:31
+		Rx Command AES 20:	17    	30.01.2006  16:31
+		Tx Command AES 1:	21    	30.01.2006  16:31
+		Tx Command AES 2:	362   	30.01.2006  16:31
+		Tx Command AES 3:	4     	30.01.2006  16:31
+		Tx Command AES 4:	0     	30.01.2006  16:31
+		Tx Command AES 5:	0     	30.01.2006  16:31
+		Tx Command AES 6:	0     	30.01.2006  16:31
+		Tx Command AES 7:	0     	30.01.2006  16:31
+		Tx Command AES 8:	0     	30.01.2006  16:31
+		Tx Command AES 9:	0     	30.01.2006  16:31
+		Tx Command AES 10:	0     	30.01.2006  16:31
+		Tx Command AES 11:	0     	30.01.2006  16:31
+		Tx Command AES 12:	363   	30.01.2006  16:31
+		Tx Command AES 13:	0     	30.01.2006  16:31
+		Tx Command AES 14:	0     	30.01.2006  16:31
+		Tx Command AES 15:	0     	30.01.2006  16:31
+		Tx Command AES 16:	0     	30.01.2006  16:31
+		Tx Command AES 17:	0     	30.01.2006  16:31
+		Tx Command AES 18:	0     	30.01.2006  16:31
+		Tx Command AES 19:	0     	30.01.2006  16:31
+		Tx Command AES 20:	0     	30.01.2006  16:31
+
+
+
+G4AI STATUS at slot N22
+
+	Firmware identification:	G4AI-AES Version 2.02
+	Alarm status:	No alarm
+	Warning status:	No warning
+	CRC Sum: 	0x633A
+
+
+G4AI STATUS at slot N28
+
+	Firmware identification:	G4AI-AES Version 2.02
+	Alarm status:	No alarm
+	Warning status:	No warning
+	CRC Sum: 	0x633A
+
+
+G4AI STATUS at slot N34
+
+	Firmware identification:	G4AI-AES Version 2.02
+	Alarm status:	No alarm
+	Warning status:	No warning
+	CRC Sum: 	0x633A
+
+
+G4AI STATUS at slot N54
+
+	Firmware identification:	G4AI-AES Version 2.02
+	Alarm status:	No alarm
+	Warning status:	No warning
+	CRC Sum: 	0x633A
+
+
+O4LE STATUS at Slot N11
+
+	Firmware identification:	O4LE Version 2.12
+	Alarm status:	No alarm
+	Warning status:	No warning
+	Internal E&M signaling:	Not used
+	Local/Transit:	Not used
+	Compander:	Activ
+	PAX-BLOCKING output:	Not used
+	EXT-BOOST input:	Not used
+	CRC Sum:	0x0691

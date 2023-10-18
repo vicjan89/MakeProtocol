@@ -1,24 +1,24 @@
 import math
 
-from interfaces import Function
+from Function import Function
 
 
 class EF4(Function):
     Operation: bool
     Step1: str
-    IN1: int
+    IN1: int #in % from ib
     t1: float
     Step2: str
-    IN2: int
+    IN2: int #in % from ib
     t2: float
     Step3: str
-    IN3: int
+    IN3: int #in % from ib
     t3: float
     Step4: str
     Characteristic: str
     INgtinv: int
     k: float
-    IN4: int
+    IN4: int #in % from ib
     t4: float
     INDir: int
     configuration: dict | None = None
@@ -36,6 +36,8 @@ class EF4(Function):
         for n, c in enumerate(self.tests):
             if Step[n] != 'OFF':
                 self.te.h4(f'{n+1} ступень')
+                i = IN[n] / 100 * self.configuration["I1b"]
+                self.te.p(f'Уставка {self.ct.s2p(i):.2f}A первичных {i:.2f}А вторичных')
                 self.te.table_name(f'Проверка {n+1} ступени')
                 self.te.table_head('F1 Ia,°', 'F2 Ia,°', 'Iср,А', 'Iвозвр,А', 'I проверки Fмч, A', 'F1 3I0,°', 'F2 3I0°', 'Kв', 'Fмч,°')
                 f = (c[1] + c[0]) / 2 + 180

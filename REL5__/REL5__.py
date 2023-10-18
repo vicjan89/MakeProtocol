@@ -69,7 +69,6 @@ class REL5__(Terminal):
             self.te.h3('Проверка УРОВ')
             self.bfp.get_electric()
         if self.toc and self.toc.Operation:
-            self.te.h3(f'Проверка функции: {self.toc.name}')
             self.toc.get_electric()
         if self.da06 and self.da06.Operation:
             self.te.h3(f'Проверка функции: {self.da06.name}')

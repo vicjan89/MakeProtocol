@@ -1,24 +1,97 @@
 import cmath
 import math
 
-from interfaces import Function
+from Function import Function
 from REL5__.GFC import GFC
 
 class ZM(Function):
     Operation: str
     OperationPP: bool
-    X1PP: float
-    R1PP: float
-    RFPP: float
+    X1PP: float | None = None #secondary setting
+    X1PPp: float | None = None #primary setting
+    R1PP: float | None = None #secondary setting
+    R1PPp: float | None = None #primary setting
+    RFPP: float | None = None #secondary setting
+    RFPPp: float | None = None #primary setting
     OperationPE: bool
-    X1PE: float | None = None
-    R1PE: float | None = None
-    X0PE: float | None = None
-    R0PE: float | None = None
-    RFPE: float | None = None
+    X1PE: float | None = None #secondary setting
+    X1PEp: float | None = None #primary setting
+    R1PE: float | None = None #secondary setting
+    R1PEp: float | None = None #primary setting
+    X0PE: float | None = None #secondary setting
+    X0PEp: float | None = None #primary setting
+    R0PE: float | None = None #secondary setting
+    R0PEp: float | None = None #primary setting
+    RFPE: float | None = None #secondary setting
+    RFPEp: float | None = None #primary setting
     gfc: GFC | None = None
 
+    def add_context(self, **kwargs):
+        super().add_context(**kwargs)
+        # calculate missing values
+        error_text = 'discrepancy between primary and secondary values'
+        error = 17
+        k = self.vt.kt / self.ct.kt
+        if self.X1PPp and self.X1PP:
+            error_value = (self.X1PP * k - self.X1PPp) / self.X1PP * 100
+            assert error_value < error, error_text + f'{error_value:.1f}%'
+        if self.R1PPp and self.R1PP:
+            error_value = (self.R1PP * k - self.R1PPp) / self.R1PP * 100
+            assert error_value < error, error_text + f'{error_value:.1f}%'
+        if self.RFPPp and self.RFPP:
+            error_value = (self.RFPP * k - self.RFPPp) / self.RFPP * 100
+            assert error_value < error, error_text + f'{error_value:.1f}%'
+        if self.X1PEp and self.X1PE:
+            error_value = (self.X1PE * k - self.X1PEp) / self.X1PE * 100
+            assert error_value < error, error_text + f'{error_value:.1f}%'
+        if self.R1PEp and self.R1PE:
+            error_value = (self.R1PE * k - self.R1PEp) / self.R1PE * 100
+            assert error_value < error, error_text + f'{error_value:.1f}%'
+        if self.X0PEp and self.X0PE:
+            error_value = (self.X0PE * k - self.X0PEp) / self.X0PE * 100
+            assert error_value < error, error_text + f'{error_value:.1f}%'
+        if self.R0PEp and self.R0PE:
+            error_value = (self.R0PE * k - self.R0PEp) / self.R0PE * 100
+            assert error_value < error, error_text + f'{error_value:.1f}%'
+        if self.RFPEp and self.RFPE:
+            error_value = (self.RFPE * k - self.RFPEp) / self.RFPE * 100
+            assert error_value < error, error_text + f'{error_value:.1f}%'
+
+        if self.X1PPp and not self.X1PP:
+            self.X1PP = self.X1PPp / k
+        if self.R1PPp and not self.R1PP:
+            self.R1PP = self.R1PPp / k
+        if self.RFPPp and not self.RFPP:
+            self.RFPP = self.RFPPp / k
+        if self.X1PEp and not self.X1PE:
+            self.X1PE = self.X1PEp / k
+        if self.R1PEp and not self.R1PE:
+            self.R1PE = self.R1PEp / k
+        if self.X0PEp and not self.X0PE:
+            self.X0PE = self.X0PEp / k
+        if self.R0PEp and not self.R0PE:
+            self.R0PE = self.R0PEp / k
+        if self.RFPEp and not self.RFPE:
+            self.RFPE = self.RFPEp / k
+        if not self.X1PPp and self.X1PP:
+            self.X1PPp = self.X1PP * k
+        if not self.R1PPp and self.R1PP:
+            self.R1PPp = self.R1PP * k
+        if not self.RFPPp and self.RFPP:
+            self.RFPPp = self.RFPP * k
+        if not self.X1PEp and self.X1PE:
+            self.X1PEp = self.X1PE * k
+        if not self.R1PEp and self.R1PE:
+            self.R1PEp = self.R1PE * k
+        if not self.X0PEp and self.X0PE:
+            self.X0PEp = self.X0PE * k
+        if not self.R0PEp and self.R0PE:
+            self.R0PEp = self.R0PE * k
+        if not self.RFPEp and self.RFPE:
+            self.RFPEp = self.RFPE * k
+
     def get_electric(self, n: int):
+        self.te.p(str(self))
         settings = []
         check_points = []
         if self.OperationPP:
@@ -189,9 +262,14 @@ class ZM(Function):
         return self.get_points_charact_str(self.get_points_charact_1ph())
 
     def __str__(self):
-        r = self.R1PE + (self.R0PE - self.R1PE) / 3
-        x = self.X1PE + (self.X0PE - self.X1PE) / 3
-        k0 = complex(self.R0PE, self.X0PE)/complex(self.R1PE, self.X1PE)
-        return f'Уставка междуфазных КЗ {math.sqrt(self.X1PP ** 2 + self.R1PP ** 2):.3f} Ом {math.degrees(math.atan(self.X1PP/self.R1PP)):.1f}гр\n' \
-               f'Уставка однофазного КЗ {math.sqrt(r ** 2 + x ** 2):.3f} Ом {math.degrees(math.atan(x/r)):.1f}гр\n' \
-               f'K0 = {abs(k0):.3f} {cmath.phase(k0):.1f}гр\n'
+        # r = self.R1PE + (self.R0PE - self.R1PE) / 3
+        # x = self.X1PE + (self.X0PE - self.X1PE) / 3
+        # k0 = complex(self.R0PE, self.X0PE)/complex(self.R1PE, self.X1PE)
+        s = ''
+        if self.OperationPP:
+            s += f'Уставка междуфазных КЗ первичных Z={self.R1PPp:.3f}+j{self.X1PPp:.3f} Ом RF={self.RFPPp:.3f} Ом, \n' \
+                 f'вторичныx Z={self.R1PP:.3f}+j{self.X1PP:.3f} Ом RF={self.RFPP:.3f} Ом, \n'
+        if self.OperationPE:
+            s += f'Уставка однофазных КЗ первичных Z={self.R0PEp:.3f}+j{self.X0PEp:.3f} Ом RF={self.RFPEp:.3f} Ом, \n' \
+                     f'вторичныx Z={self.R0PE:.3f}+j{self.X0PE:.3f} Ом RF={self.RFPE:.3f} Ом'
+        return s

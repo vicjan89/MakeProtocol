@@ -1,5 +1,4 @@
-from pydantic import field_validator, BaseModel
-
+from pydantic import field_validator
 
 from interfaces import Terminal, AnalogInputs, CBASVAL, Channel
 from T3WPDIF import T3WPDIF

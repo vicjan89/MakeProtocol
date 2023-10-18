@@ -20,7 +20,8 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 pris = (('grodno_tec2_devatovka', 'grodno_tec2_devatovka.tex', 'Протокол профвосстановления РЗА ВЛ-110кВ Девятовка Гродненской ТЭЦ-2', '23.09.2023'),
-        ('grodno_tec2_jugnaja1', 'grodno_tec2_jugnaja1.tex', 'Протокол профвосстановления РЗА ВЛ-110кВ Южная-1 Гродненской ТЭЦ-2', '16.09.2023'))
+        ('grodno_tec2_jugnaja1', 'grodno_tec2_jugnaja1.tex', 'Протокол профвосстановления РЗА ВЛ-110кВ Южная-1 Гродненской ТЭЦ-2', '16.09.2023'),
+        ('grodno_tec2_T-5', '', 'Протокол профилактического контроля РЗА трансформатора Т-5 Гродненской ТЭЦ-2', '02.08.2023'))
 num = 1
 today = pris[num][3]
 root_doc = pris[num][0]
@@ -43,6 +44,7 @@ latex_elements = {
     # Latex figure (float) alignment
     # 'figure_align': 'htbp',
     'extraclassoptions': 'openany', #'manual',
+    'figure_align': 'H', # исключило непопадание рисунков в границы страницы
 }
 engines = ('pdflatex', 'xelatex', 'lualatex', 'platex', 'uplatex')
 latex_engine = engines[2]
@@ -51,7 +53,7 @@ latex_engine = engines[2]
 #  author, documentclass [howto, manual, or own class]).
 theme = ('manual', 'howto')[1]
 latex_documents = [
-    (root_doc, pris[num][1], pris[num][2], 'ООО Электротехнические Решения', theme),
+    (root_doc, pris[num][0]+'.tex', pris[num][2], 'ООО Электротехнические Решения', theme),
 ]
 latex_table_style = ['standart']
 

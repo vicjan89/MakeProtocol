@@ -2,7 +2,7 @@ import cmath
 import math
 
 
-from interfaces import Function
+from Function import Function
 
 
 class GFC(Function):
