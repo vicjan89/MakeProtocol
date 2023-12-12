@@ -28,4 +28,20 @@ class TOC(Function):
                               f'{self.tests["N"][1]/self.tests["N"][0]:.2f}')
 
     def get_complex(self):
-        ...
+        if self.complex:
+            if 'N' in self.complex:
+                for n in range(0, len(self.complex['N']), 2):
+                    table_name = f'Проверка функции {self.nameN} при {" ".join(self.complex["N"][n])}'
+                    self.te.table_name(table_name)
+                    self.te.table_head('Контакт/сигнал', 'tсраб, мс', widths=(80, 20))
+                    for num, cont in enumerate(self.complex['N'][n+1]):
+                        if cont:
+                            self.te.table_row(self.contacts[num], 'сработал' if cont == True else cont)
+            if 'P' in self.complex:
+                for n in range(0, len(self.complex['P']), 2):
+                    table_name = f'Проверка функции {self.nameP} при {" ".join(self.complex["P"][n])}'
+                    self.te.table_name(table_name)
+                    self.te.table_head('Контакт/сигнал', 'tсраб, мс', widths=(80, 20))
+                    for num, cont in enumerate(self.complex['P'][n+1]):
+                        if cont:
+                            self.te.table_row(self.contacts[num], 'сработал' if cont == True else cont)

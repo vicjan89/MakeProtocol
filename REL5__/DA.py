@@ -4,7 +4,7 @@ from Function import Function
 class DA(Function):
     name: str
     Operation: bool
-    Histeres: int
+    Histeres: int #in amper
     HiAlarm: int #primary value in amper
 
     def get_electric(self):

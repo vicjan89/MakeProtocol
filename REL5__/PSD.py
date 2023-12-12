@@ -5,12 +5,18 @@ class PSD(Function):
     Detection: bool | None = None
     X1IN: float
     R1IN: float
-    KX: float
-    KR: float
+    KX: int
+    KR: int
     X1INp: float
     R1INp: float
-    X1OUTp: float
-    R1OUTp: float
+    X1OUTp: float | None = None
+    R1OUTp: float | None = None
+
+    def add_context(self, **kwargs):
+        super().add_context(**kwargs)
+        if not self.X1OUTp:
+            self.X1OUTp = self.X1INp * self.KX / 100
+            self.R1OUTp = self.R1INp * self.KR / 100
 
     def get_electric(self):
         k = self.vt.kt / self.ct.kt

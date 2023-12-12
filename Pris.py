@@ -3,6 +3,7 @@ from interfaces import element
 from REL5__.REL511 import REL511
 from REL5__.REL551 import REL551
 from REF54_.REF545 import REF545
+from TOR.TOR import TOR
 from CT import CT
 from VT import VT
 from ETL540 import ETL540
@@ -15,17 +16,18 @@ class Pris(element):
     rel551: REL551 | None = None
     rel511k2: REL511 | None = None
     ref545: REF545 | None = None
+    tor: TOR | None = None
     etl: ETL540 | None = None
     spec: str | None = None
     ct: CT | None = None
     vt: VT | None = None
     izol: list
-    out_electric: str | None
+    out_electric: str | None = None
     tests: dict | None = None
     vzaimodeistvie: list
     work_current: list
     list_sf: list[SF]
-    contacts: list
+    contacts: list | None = None
     measurements: list[str]
     on_switch: list[str]
     sign: list[list]
@@ -34,14 +36,19 @@ class Pris(element):
         super().add_context(**kwargs)
         if self.hf_channel:
             self.hf_channel.add_context(**kwargs)
-        self.ct.add_context(**kwargs)
-        kwargs.update({'ct': self.ct, 'vt': self.vt})
+        if self.ct:
+            self.ct.add_context(**kwargs)
+            kwargs.update({'ct': self.ct, 'vt': self.vt})
         if self.rel511k1:
             self.rel511k1.add_context(**kwargs)
         if self.rel551:
             self.rel551.add_context(**kwargs)
-        self.rel511k2.add_context(**kwargs)
-        self.ref545.add_context(**kwargs)
+        if self.rel511k2:
+            self.rel511k2.add_context(**kwargs)
+        if self.ref545:
+            self.ref545.add_context(**kwargs)
+        if self.tor:
+            self.tor.add_context(**kwargs)
         if self.etl:
             self.etl.add_context(**kwargs)
         for sf in self.list_sf:
@@ -142,13 +149,18 @@ class Pris(element):
         self.te.i('Выключатели исправны и пригодны к эксплуатации.')
         self.te.h3('Проверка реле и соленоидов управления выключателя')
         self.te.include(self.out_electric)
-        self.ct.get_electric()
+        if self.ct:
+            self.ct.get_electric()
         if self.rel511k1:
             self.rel511k1.get_electric()
         if self.rel551:
             self.rel551.get_electric()
-        self.rel511k2.get_electric()
-        self.ref545.get_electric()
+        if self.rel511k2:
+            self.rel511k2.get_electric()
+        if self.ref545:
+            self.ref545.get_electric()
+        if self.tor:
+            self.tor.get_electric()
         if self.etl:
             self.etl.get_electric()
         if self.hf_channel:
@@ -160,5 +172,9 @@ class Pris(element):
             self.rel511k1.get_complex()
         if self.rel551:
             self.rel551.get_complex()
-        self.rel511k2.get_complex()
-        self.ref545.get_complex()
+        if self.rel511k2:
+            self.rel511k2.get_complex()
+        if self.ref545:
+            self.ref545.get_complex()
+        if self.tor:
+            self.tor.get_complex()

@@ -1,4 +1,5 @@
 import sys
+import os
 
 from yaml import load
 from textengines.ReStructuredText import ReStructuredText
@@ -15,9 +16,11 @@ except ImportError:
 with open(path, 'r', encoding='utf-8') as stream:
     data = load(stream, Loader=Loader)
 
-rst = ReStructuredText(path=path.split('.')[0]+'.rst', static='_static')
+rst = ReStructuredText(path=path.split('.')[0]+'.rst', static='_static', maxdepth=2)
 
 pris = Pris(**data)
 pris.add_context(te=rst, contacts=pris.contacts)
 pris.get_protocol()
 rst.save()
+
+os.system('make latexpdf')

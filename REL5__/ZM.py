@@ -30,7 +30,7 @@ class ZM(Function):
         super().add_context(**kwargs)
         # calculate missing values
         error_text = 'discrepancy between primary and secondary values'
-        error = 17
+        error = 20 #error betwin setting primary and secondary in %
         k = self.vt.kt / self.ct.kt
         if self.X1PPp and self.X1PP:
             error_value = (self.X1PP * k - self.X1PPp) / self.X1PP * 100
@@ -267,9 +267,11 @@ class ZM(Function):
         # k0 = complex(self.R0PE, self.X0PE)/complex(self.R1PE, self.X1PE)
         s = ''
         if self.OperationPP:
-            s += f'Уставка междуфазных КЗ первичных Z={self.R1PPp:.3f}+j{self.X1PPp:.3f} Ом RF={self.RFPPp:.3f} Ом, \n' \
-                 f'вторичныx Z={self.R1PP:.3f}+j{self.X1PP:.3f} Ом RF={self.RFPP:.3f} Ом, \n'
+            s += f'Уставка междуфазных КЗ первичных Z={self.R1PPp:.3f}+j{self.X1PPp:.3f} Ом RFPP={self.RFPPp:.3f} Ом, ' \
+                 f'вторичныx Z={self.R1PP:.3f}+j{self.X1PP:.3f} Ом RFPP={self.RFPP:.3f} Ом, '
         if self.OperationPE:
-            s += f'Уставка однофазных КЗ первичных Z={self.R0PEp:.3f}+j{self.X0PEp:.3f} Ом RF={self.RFPEp:.3f} Ом, \n' \
-                     f'вторичныx Z={self.R0PE:.3f}+j{self.X0PE:.3f} Ом RF={self.RFPE:.3f} Ом'
+            s += f'Уставка однофазных КЗ первичных Z0={self.R0PEp:.3f}+j{self.X0PEp:.3f} Ом ' \
+                 f'Z1={self.R1PEp:.3f}+j{self.X1PEp:.3f} Ом RFPE={self.RFPEp:.3f} Ом, ' \
+                     f'вторичныx Z0={self.R0PE:.3f}+j{self.X0PE:.3f} Ом ' \
+                 f'Z1={self.R1PE:.3f}+j{self.X1PE:.3f} Ом RFPE={self.RFPE:.3f} Ом'
         return s
