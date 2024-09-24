@@ -12,11 +12,11 @@ class DZO(Function):
 
     def get_electric(self):
         self.te.p(f'Уставка: {str(self)}')
-        self.te.table_name('Проверка тормозных характеристик ДЗО')
+        self.te.h4('Проверка тормозных характеристик ДЗО')
         settings = [((0, self.id_nach * 2, self.id_nach * 4),
                      (self.id_nach, self.id_nach, self.id_nach * 2),
                      'Уставка'),]
-        for case_test in self.tests:
+        for case_test in self.tests['bias_char']:
             self.te.table_name(case_test[0])
             self.te.table_head('I1,A', 'I2,A', 'Iдиф,о.е.', 'Iторм,о.е.')
             d = []
